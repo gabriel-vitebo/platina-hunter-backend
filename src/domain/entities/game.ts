@@ -1,10 +1,10 @@
-import { Slug } from "./value-object/slug"
-import { Entity } from "@/core/entities/entity"
-import { Optional } from "@/core/types/optional"
-import { UniqueEntityId } from "@/core/entities/unique-entity-id"
+import { Slug } from './value-object/slug'
+import { Entity } from '@/core/entities/entity'
+import { Optional } from '@/core/types/optional'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 interface GameProps {
-  userId: string,
+  userId: string
   title: string
   numberOfAchievements: number
   slug: Slug
@@ -49,13 +49,16 @@ export class Game extends Entity<GameProps> {
 
   static create(
     props: Optional<GameProps, 'createdAt' | 'slug'>,
-    id?: UniqueEntityId
+    id?: UniqueEntityId,
   ) {
-    const game = new Game({
-      ...props,
-      slug: props.slug ?? Slug.createFromText(props.title),
-      createdAt: new Date()
-    }, id)
+    const game = new Game(
+      {
+        ...props,
+        slug: props.slug ?? Slug.createFromText(props.title),
+        createdAt: new Date(),
+      },
+      id,
+    )
 
     return game
   }

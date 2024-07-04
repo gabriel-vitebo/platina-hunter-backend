@@ -1,5 +1,5 @@
-import { Entity } from "@/core/entities/entity"
-import { UniqueEntityId } from "@/core/entities/unique-entity-id"
+import { Entity } from '@/core/entities/entity'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 interface AchievementsProps {
   gameId: string
@@ -37,10 +37,7 @@ export class Achievements extends Entity<AchievementsProps> {
     this.props.isItLost = isItLost
   }
 
-  static create(
-    props: AchievementsProps,
-    id?: UniqueEntityId
-  ) {
+  static create(props: AchievementsProps, id?: UniqueEntityId) {
     const achievements = new Achievements(props, id)
 
     return achievements

@@ -7,15 +7,15 @@ export class Slug {
 
   /**
    * Receives a string and normalize it as a slug
-   * 
+   *
    * Example: "An example title game" => "an-example-title-game"
-   * 
+   *
    * @param text {string}
    */
 
   static createFromText(text: string) {
     const slugText = text
-      .normalize("NFKD")
+      .normalize('NFKD')
       .toLowerCase()
       .trim()
       .replace(/\s+/g, '-')
