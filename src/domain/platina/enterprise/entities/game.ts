@@ -4,7 +4,7 @@ import { Optional } from '@/core/types/optional'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 interface GameProps {
-  userId: string
+  userId: UniqueEntityId
   title: string
   numberOfAchievements: number
   slug: Slug

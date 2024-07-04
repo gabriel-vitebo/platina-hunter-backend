@@ -1,3 +1,5 @@
+import { Game } from '../../enterprise/entities/game'
+
 export interface GamesRepository {
-  findById(gameId: string): Promise<void>
+  create(game: Game): Promise<void>
 }
