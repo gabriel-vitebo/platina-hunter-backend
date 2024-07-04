@@ -1,7 +1,7 @@
 import { Slug } from "./value-object/slug"
-import { Entity } from "../../core/entities/entity"
-import { Optional } from "../../core/types/optional"
-import { UniqueEntityId } from "../../core/entities/unique-entity-id"
+import { Entity } from "@/core/entities/entity"
+import { Optional } from "@/core/types/optional"
+import { UniqueEntityId } from "@/core/entities/unique-entity-id"
 
 interface GameProps {
   userId: string,
