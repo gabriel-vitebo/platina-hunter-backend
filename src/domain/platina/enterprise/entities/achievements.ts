@@ -17,12 +17,12 @@ export class Achievements extends Entity<AchievementsProps> {
     return this.props.title
   }
 
-  get description() {
-    return this.props.description
-  }
-
   get isItLost() {
     return this.props.isItLost
+  }
+
+  get description() {
+    return this.props.description || ''
   }
 
   set title(title: string) {
