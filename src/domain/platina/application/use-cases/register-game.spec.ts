@@ -1,19 +1,24 @@
-import { Game } from "../../enterprise/entities/game";
-import { GamesRepository } from "../repositories/games-repository";
+import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
 import { RegisterGameUseCase } from "./register-game";
 
-const fakeGameRepository: GamesRepository = {
-  create: async (game: Game) => { }
-}
+let inMemoryGamesRepository: InMemoryGamesRepository
+let sut: RegisterGameUseCase
 
-test('register a new game', async () => {
-  const registerGame = new RegisterGameUseCase(fakeGameRepository)
-
-  const { game } = await registerGame.execute({
-    userId: '1',
-    title: 'Jogo Teste',
-    numberOfAchievements: 3
+describe('Register new Game', () => {
+  beforeEach(() => {
+    inMemoryGamesRepository = new InMemoryGamesRepository()
+    sut = new RegisterGameUseCase(inMemoryGamesRepository)
   })
 
-  expect(game.id).toBeTruthy()
+  it('should be able to register a new game', async () => {
+
+    const { game } = await sut.execute({
+      userId: '1',
+      title: 'Jogo Teste',
+      numberOfAchievements: 3
+    })
+
+    expect(game.id).toBeTruthy()
+    expect(inMemoryGamesRepository.items[0].id).toEqual(game.id)
+  })
 })
