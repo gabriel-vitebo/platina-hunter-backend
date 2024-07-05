@@ -1,9 +1,6 @@
 import { InMemoryAchievementsRepository } from "test/repositories/in-memory-achievements-repository";
 import { FetchAchievementsUseCase } from "./fetch-achievements-by-game";
-import { Game } from "../../enterprise/entities/game";
-import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
-import { Achievements } from "../../enterprise/entities/achievements";
 import { makeGame } from "test/factories/make-game";
 import { makeAchievements } from "test/factories/make-achievements";
 

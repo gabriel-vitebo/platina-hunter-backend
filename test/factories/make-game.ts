@@ -1,17 +1,17 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { Game, GameProps } from "@/domain/platina/enterprise/entities/game";
-import { Slug } from "@/domain/platina/enterprise/entities/value-object/slug";
+import { faker } from '@faker-js/faker'
 
 export function makeGame(
-  override: Partial<GameProps> = {}
+  override: Partial<GameProps> = {},
+  id?: UniqueEntityId
 ) {
   const game = Game.create({
     userId: new UniqueEntityId(),
-    title: 'Example Game',
-    numberOfAchievements: 2,
-    slug: Slug.create('example-game'),
+    title: faker.lorem.sentence(),
+    numberOfAchievements: faker.number.int({ min: 1, max: 50 }),
     ...override
-  })
+  }, id)
 
   return game
 }
