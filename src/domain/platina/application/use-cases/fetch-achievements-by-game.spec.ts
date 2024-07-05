@@ -4,7 +4,8 @@ import { Game } from "../../enterprise/entities/game";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
 import { Achievements } from "../../enterprise/entities/achievements";
-import { i } from "vitest/dist/reporters-yx5ZTtEV";
+import { makeGame } from "test/factories/make-game";
+import { makeAchievements } from "test/factories/make-achievements";
 
 let inMemoryAchievementsRepository: InMemoryAchievementsRepository
 let inMemoryGamesRepository: InMemoryGamesRepository
@@ -18,31 +19,20 @@ describe('Fetch all Achievements By Game', () => {
   })
 
   it('should be able to fetch all achievement by game', async () => {
-    const gameId = new UniqueEntityId('game-1');
-
-    const newGame = Game.create({
-      userId: gameId,
-      title: 'Example Game',
-      numberOfAchievements: 2
-    })
-
+    const newGame = makeGame()
     await inMemoryGamesRepository.create(newGame)
 
     for (let i: number = 1; i <= 4; i++) {
-      let newAchievements = Achievements.create({
-        gameId: gameId,
-        title: `Example Achievements ${i}`,
-        isItLost: false,
+      let newAchievements = makeAchievements({
+        gameId: newGame.id
       })
-      console.log(newAchievements)
+
       await inMemoryAchievementsRepository.create(newAchievements)
     }
 
     const { achievements } = await sut.execute({
-      gameId,
+      gameId: newGame.id,
     })
-
-    console.log(achievements.length)
 
     expect(achievements.length).toEqual(4)
     expect(inMemoryAchievementsRepository.items[0].title).toEqual(achievements[0].title)
