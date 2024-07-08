@@ -5,9 +5,9 @@ import { Achievements } from "@/domain/platina/enterprise/entities/achievements"
 export class InMemoryAchievementsRepository implements AchievementsRepository {
   public items: Achievements[] = []
 
-  async findByGameId(gameId: UniqueEntityId) {
-    const achievements = this.items.filter((item) => item.gameId === gameId)
 
+  async findByGameId(gameId: string) {
+    const achievements = this.items.filter((item) => item.gameId.toValue() === gameId)
     return achievements
   }
 

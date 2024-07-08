@@ -3,7 +3,7 @@ import { Achievements } from '../../enterprise/entities/achievements'
 import { AchievementsRepository } from '../repositories/achievements-repository'
 
 interface FetchAchievementsUseCaseRequest {
-  gameId: UniqueEntityId
+  gameId: string
 }
 
 interface FetchAchievementsUseCaseResponse {
