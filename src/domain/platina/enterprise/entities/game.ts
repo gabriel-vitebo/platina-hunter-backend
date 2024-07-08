@@ -47,6 +47,11 @@ export class Game extends Entity<GameProps> {
     this.touch()
   }
 
+  set numberOfAchievements(numberOfAchievements: number) {
+    this.props.numberOfAchievements = numberOfAchievements
+    this.touch()
+  }
+
   static create(
     props: Optional<GameProps, 'createdAt' | 'slug'>,
     id?: UniqueEntityId,

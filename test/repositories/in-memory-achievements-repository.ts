@@ -24,6 +24,12 @@ export class InMemoryAchievementsRepository implements AchievementsRepository {
     this.items.push(achievements)
   }
 
+  async save(achievement: Achievements) {
+    const itemIndex = this.items.findIndex((item) => item.id === achievement.id)
+
+    this.items[itemIndex] = achievement
+  }
+
   async delete(achievement: Achievements) {
     const itemIndex = this.items.findIndex((item) => item.id === achievement.id)
 

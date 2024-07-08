@@ -24,8 +24,15 @@ export class InMemoryGamesRepository implements GamesRepository {
     return game
   }
 
+
   async create(game: Game) {
     this.items.push(game)
+  }
+
+  async save(game: Game) {
+    const itemIndex = this.items.findIndex((item) => item.id === game.id)
+
+    this.items[itemIndex] = game
   }
 
   async delete(game: Game) {
