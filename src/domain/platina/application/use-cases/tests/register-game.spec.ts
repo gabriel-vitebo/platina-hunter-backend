@@ -1,5 +1,5 @@
 import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
-import { RegisterGameUseCase } from "./register-game";
+import { RegisterGameUseCase } from "../register-game";
 
 let inMemoryGamesRepository: InMemoryGamesRepository
 let sut: RegisterGameUseCase

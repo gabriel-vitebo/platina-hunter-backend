@@ -1,4 +1,4 @@
-import { CreateAchievementUseCase } from "./create-achievements";
+import { CreateAchievementUseCase } from "../create-achievements";
 import { InMemoryAchievementsRepository } from "test/repositories/in-memory-achievements-repository";
 
 let inMemoryAchievementsRepository: InMemoryAchievementsRepository

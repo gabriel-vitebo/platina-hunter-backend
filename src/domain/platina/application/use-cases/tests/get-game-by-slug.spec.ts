@@ -1,7 +1,7 @@
 import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
-import { GetGameBySlugUseCase } from "./get-game-by-slug";
+import { GetGameBySlugUseCase } from "../get-game-by-slug";
 import { makeGame } from "test/factories/make-game";
-import { Slug } from "../../enterprise/entities/value-object/slug";
+import { Slug } from "../../../enterprise/entities/value-object/slug";
 
 let inMemoryGamesRepository: InMemoryGamesRepository
 let sut: GetGameBySlugUseCase

@@ -1,6 +1,6 @@
 import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
 import { makeGame } from "test/factories/make-game";
-import { DeleteGameUseCase } from "./delete-game";
+import { DeleteGameUseCase } from "../delete-game";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 
 let inMemoryGamesRepository: InMemoryGamesRepository

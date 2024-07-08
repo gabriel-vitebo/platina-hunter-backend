@@ -1,5 +1,5 @@
 import { InMemoryAchievementsRepository } from "test/repositories/in-memory-achievements-repository";
-import { FetchAchievementsUseCase } from "./fetch-achievements-by-game";
+import { FetchAchievementsUseCase } from "../fetch-achievements-by-game";
 import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
 import { makeGame } from "test/factories/make-game";
 import { makeAchievements } from "test/factories/make-achievements";
