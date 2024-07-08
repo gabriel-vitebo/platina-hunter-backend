@@ -5,6 +5,15 @@ import { Achievements } from "@/domain/platina/enterprise/entities/achievements"
 export class InMemoryAchievementsRepository implements AchievementsRepository {
   public items: Achievements[] = []
 
+  async findById(achievementsId: string) {
+    const achievement = this.items.find((item) => item.id.toString() === achievementsId)
+
+    if (!achievement) {
+      return null
+    }
+
+    return achievement
+  }
 
   async findByGameId(gameId: string) {
     const achievements = this.items.filter((item) => item.gameId.toValue() === gameId)
@@ -13,6 +22,12 @@ export class InMemoryAchievementsRepository implements AchievementsRepository {
 
   async create(achievements: Achievements) {
     this.items.push(achievements)
+  }
+
+  async delete(achievement: Achievements) {
+    const itemIndex = this.items.findIndex((item) => item.id === achievement.id)
+
+    this.items.splice(itemIndex, 1)
   }
 
 }
