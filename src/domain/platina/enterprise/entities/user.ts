@@ -2,8 +2,9 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-interface UserProps {
+export interface UserProps {
   name: string
+  games: string[]
   createdAt: Date
   updateAt?: Date
 }
@@ -11,6 +12,10 @@ interface UserProps {
 export class User extends Entity<UserProps> {
   get name() {
     return this.props.name
+  }
+
+  get games() {
+    return this.props.games
   }
 
   get createdAt() {
@@ -27,6 +32,11 @@ export class User extends Entity<UserProps> {
 
   set name(name: string) {
     this.props.name = name
+    this.touch()
+  }
+
+  set games(games: string[]) {
+    this.props.games = games
     this.touch()
   }
 
