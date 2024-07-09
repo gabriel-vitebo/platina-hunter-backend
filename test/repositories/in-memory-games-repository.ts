@@ -1,3 +1,4 @@
+import { PaginationParams } from "@/core/repositories/pagination-params";
 import { GamesRepository } from "@/domain/platina/application/repositories/games-repository";
 import { Game } from "@/domain/platina/enterprise/entities/game";
 
@@ -22,6 +23,14 @@ export class InMemoryGamesRepository implements GamesRepository {
     }
 
     return game
+  }
+
+  async findMany({ page }: PaginationParams) {
+    const games = this.items
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice((page - 1) * 20, page * 20)
+
+    return games
   }
 
 
