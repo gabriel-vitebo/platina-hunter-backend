@@ -1,9 +1,9 @@
-import { Achievements } from "../../enterprise/entities/achievements";
+import { Achievement } from "../../enterprise/entities/achievement";
 
-export interface AchievementsRepository {
-  findById(achievementsId: string): Promise<Achievements | null>
-  findByGameId(gameId: string): Promise<Achievements[]>
-  create(achievement: Achievements): Promise<void>
-  save(achievement: Achievements): Promise<void>
-  delete(achievement: Achievements): Promise<void>
+export interface AchievementRepository {
+  findById(achievementId: string): Promise<Achievement | null>
+  findByGameId(gameId: string): Promise<Achievement[]>
+  create(achievement: Achievement): Promise<void>
+  save(achievement: Achievement): Promise<void>
+  delete(achievement: Achievement): Promise<void>
 }

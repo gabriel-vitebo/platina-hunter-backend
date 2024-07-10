@@ -33,7 +33,7 @@ export class AddGameToLibraryUseCase {
       throw new Error('User not found!')
     }
 
-    user.games.push(game.id.toString())
+    user.games.push(game)
 
     await this.usersRepository.save(user)
 

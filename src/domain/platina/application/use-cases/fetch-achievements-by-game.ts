@@ -1,4 +1,3 @@
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Achievements } from '../../enterprise/entities/achievements'
 import { AchievementsRepository } from '../repositories/achievements-repository'
 

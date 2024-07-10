@@ -13,13 +13,13 @@ describe('Fetch All Games', () => {
 
   it('should be able to fetch all games', async () => {
     await inMemoryGamesRepository.create(
-      makeGame({ createdAt: new Date(2024, 0, 20) })
+      makeGame({ title: 'Elden Ring' })
     )
     await inMemoryGamesRepository.create(
-      makeGame({ createdAt: new Date(2024, 0, 18) })
+      makeGame({ title: 'assassins creed' })
     )
     await inMemoryGamesRepository.create(
-      makeGame({ createdAt: new Date(2024, 0, 23) })
+      makeGame({ title: 'detroit become human' })
     )
 
     const { games } = await sut.execute({
@@ -27,9 +27,9 @@ describe('Fetch All Games', () => {
     })
 
     expect(games).toEqual([
-      expect.objectContaining({ createdAt: new Date(2024, 0, 23) }),
-      expect.objectContaining({ createdAt: new Date(2024, 0, 20) }),
-      expect.objectContaining({ createdAt: new Date(2024, 0, 18) })
+      expect.objectContaining({ title: 'assassins creed' }),
+      expect.objectContaining({ title: 'detroit become human' }),
+      expect.objectContaining({ title: 'Elden Ring' })
     ])
   })
 

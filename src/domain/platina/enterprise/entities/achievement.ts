@@ -1,14 +1,14 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-export interface AchievementsProps {
+export interface AchievementProps {
   gameId: UniqueEntityId
   title: string
   isItLost: boolean
   description?: string
 }
 
-export class Achievements extends Entity<AchievementsProps> {
+export class Achievement extends Entity<AchievementProps> {
   get gameId() {
     return this.props.gameId
   }
@@ -37,9 +37,9 @@ export class Achievements extends Entity<AchievementsProps> {
     this.props.isItLost = isItLost
   }
 
-  static create(props: AchievementsProps, id?: UniqueEntityId) {
-    const achievements = new Achievements(props, id)
+  static create(props: AchievementProps, id?: UniqueEntityId) {
+    const achievement = new Achievement(props, id)
 
-    return achievements
+    return achievement
   }
 }

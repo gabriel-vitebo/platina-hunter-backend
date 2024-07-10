@@ -27,7 +27,7 @@ export class InMemoryGamesRepository implements GamesRepository {
 
   async findMany({ page }: PaginationParams) {
     const games = this.items
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .sort((a, b) => a.title.localeCompare(b.title))
       .slice((page - 1) * 20, page * 20)
 
     return games

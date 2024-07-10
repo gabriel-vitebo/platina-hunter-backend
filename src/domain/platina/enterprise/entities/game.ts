@@ -2,11 +2,12 @@ import { Slug } from './value-object/slug'
 import { Entity } from '@/core/entities/entity'
 import { Optional } from '@/core/types/optional'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Achievement } from './achievement'
 
 export interface GameProps {
   userId: UniqueEntityId
   title: string
-  numberOfAchievements: number
+  achievements: Achievement[]
   slug: Slug
   createdAt: Date
   updateAt?: Date
@@ -21,8 +22,8 @@ export class Game extends Entity<GameProps> {
     return this.props.title
   }
 
-  get numberOfAchievements() {
-    return this.props.numberOfAchievements
+  get achievements() {
+    return this.props.achievements
   }
 
   get slug() {
@@ -47,8 +48,8 @@ export class Game extends Entity<GameProps> {
     this.touch()
   }
 
-  set numberOfAchievements(numberOfAchievements: number) {
-    this.props.numberOfAchievements = numberOfAchievements
+  set achievements(achievements: Achievement[]) {
+    this.props.achievements = achievements
     this.touch()
   }
 
