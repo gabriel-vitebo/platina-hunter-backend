@@ -27,7 +27,8 @@ describe('Register new Game', () => {
           title: 'Segunda Conquista Teste',
           isItLost: false,
           description: 'Descrição dessa segunda conquista teste',
-        }, {
+        },
+        {
           title: 'Terceira Conquista Teste',
           isItLost: true,
           description: 'Descrição dessa terceira conquista teste',
@@ -40,6 +41,8 @@ describe('Register new Game', () => {
     expect(achievements).toHaveLength(3)
     expect(inMemoryAchievementsRepository.items).toHaveLength(3)
     expect(game.achievements[0].title).toEqual('Primeira Conquista Teste')
+    expect(game.achievements[0].gameId).toEqual(game.id)
+
   })
 
   it('should not be able to register a new game without achievements', async () => {

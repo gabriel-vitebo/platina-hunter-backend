@@ -14,8 +14,8 @@ describe('Delete Game', () => {
 
   it('should be able to delete a game', async () => {
     const newGame = makeGame({
-      userId: new UniqueEntityId('user-1')
-    }, new UniqueEntityId('game-1'))
+      userId: new UniqueEntityId('user-1'),
+    }, {}, 1, new UniqueEntityId('game-1'))
 
     await inMemoryGamesRepository.create(newGame)
 
@@ -29,8 +29,8 @@ describe('Delete Game', () => {
 
   it('should not be able to delete a game from another user', async () => {
     const newGame = makeGame({
-      userId: new UniqueEntityId('user-1')
-    }, new UniqueEntityId('game-1'))
+      userId: new UniqueEntityId('user-1'),
+    }, {}, 1, new UniqueEntityId('game-1'))
 
     await inMemoryGamesRepository.create(newGame)
 

@@ -1,17 +1,33 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
+import { Achievement, AchievementProps } from "@/domain/platina/enterprise/entities/achievement";
 import { Game, GameProps } from "@/domain/platina/enterprise/entities/game";
-import { faker } from '@faker-js/faker'
+import { faker } from '@faker-js/faker';
 
 export function makeGame(
-  override: Partial<GameProps> = {},
+  gameOverride: Partial<GameProps> = {},
+  achievementOverride: Partial<AchievementProps> = {},
+  amount: number = 1,
   id?: UniqueEntityId
 ) {
+
   const game = Game.create({
     userId: new UniqueEntityId(),
     title: faker.lorem.sentence(),
-    numberOfAchievements: faker.number.int({ min: 1, max: 50 }),
-    ...override
-  }, id)
+    achievements: [],
+    ...gameOverride
+  }, id);
 
-  return game
+  for (let i = 0; i < amount; i++) {
+    const newAchievement = Achievement.create({
+      gameId: game.id,
+      title: faker.lorem.sentence(),
+      description: faker.lorem.text(),
+      isItLost: false,
+      ...achievementOverride
+    }, id);
+
+    game.achievements.push(newAchievement);
+  }
+
+  return game;
 }

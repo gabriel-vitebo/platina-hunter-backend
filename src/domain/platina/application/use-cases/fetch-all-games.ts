@@ -1,6 +1,3 @@
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Achievements } from '../../enterprise/entities/achievements'
-import { AchievementsRepository } from '../repositories/achievements-repository'
 import { Game } from '../../enterprise/entities/game'
 import { GamesRepository } from '../repositories/games-repository'
 
@@ -9,7 +6,9 @@ interface FetchAllGamesUseCaseRequest {
 }
 
 interface FetchAllGamesUseCaseResponse {
-  games: Game[]
+  games: {
+    title: string
+  }[]
 }
 
 export class FetchAllGamesUseCase {
@@ -19,7 +18,9 @@ export class FetchAllGamesUseCase {
     const games = await this.gamesRepository.findMany({ page })
 
     return {
-      games,
+      games: games.map((game) => ({
+        title: game.title
+      }))
     }
   }
 }

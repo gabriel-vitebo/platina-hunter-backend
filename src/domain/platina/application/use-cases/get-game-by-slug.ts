@@ -1,4 +1,3 @@
-import { Game } from '../../enterprise/entities/game'
 import { GamesRepository } from '../repositories/games-repository'
 
 interface GetGameBySlugUseCaseRequest {
@@ -6,7 +5,11 @@ interface GetGameBySlugUseCaseRequest {
 }
 
 interface GetGameBySlugUseCaseResponse {
-  game: Game
+  game: {
+    id: string,
+    title: string,
+    numberOfAchievements: number
+  }
 }
 
 export class GetGameBySlugUseCase {
@@ -14,13 +17,16 @@ export class GetGameBySlugUseCase {
 
   async execute({ slug }: GetGameBySlugUseCaseRequest): Promise<GetGameBySlugUseCaseResponse> {
     const game = await this.gameRepository.findBySlug(slug)
-
     if (!game) {
       throw new Error('Game not found!')
     }
 
     return {
-      game,
+      game: {
+        id: game.id.toString(),
+        title: game.title,
+        numberOfAchievements: game.achievements.length,
+      }
     }
   }
 }
