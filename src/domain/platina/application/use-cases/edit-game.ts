@@ -1,15 +1,26 @@
-import { Game } from '../../enterprise/entities/game'
 import { GamesRepository } from '../repositories/games-repository'
 
 interface EditGameUseCaseRequest {
   userId: string
   gameId: string
   title: string
-  numberOfAchievements: number
+  achievements: Array<{
+    id: string,
+    title: string,
+    description?: string,
+    isItLost: boolean
+  }>
 }
 
 interface EditGameUseCaseResponse {
-  game: Game
+  game: {
+    title: string,
+    achievements: Array<{
+      title: string,
+      description: string,
+      isItLost: boolean
+    }>
+  }
 }
 
 export class EditGameUseCase {
@@ -19,7 +30,7 @@ export class EditGameUseCase {
     userId,
     gameId,
     title,
-    numberOfAchievements
+    achievements
   }: EditGameUseCaseRequest): Promise<EditGameUseCaseResponse> {
     const game = await this.gameRepository.findById(gameId)
 
@@ -32,12 +43,31 @@ export class EditGameUseCase {
     }
 
     game.title = title
-    game.numberOfAchievements = numberOfAchievements
+
+    achievements.forEach((achievement) => {
+      const existingAchievement = game.achievements.find(item => item.id.toString() === achievement.id)
+
+      if (!existingAchievement) {
+        throw new Error('Achievement not found!')
+      }
+
+      existingAchievement.title = achievement.title
+      existingAchievement.description = achievement.description || existingAchievement.description
+      existingAchievement.isItLost = achievement.isItLost
+
+    })
 
     await this.gameRepository.save(game)
 
     return {
-      game
+      game: {
+        title: game.title,
+        achievements: game.achievements.map((item) => ({
+          title: item.title,
+          description: item.description,
+          isItLost: item.isItLost
+        })),
+      }
     }
   }
 }
