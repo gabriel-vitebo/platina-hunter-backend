@@ -1,4 +1,5 @@
 import { Slug } from './value-object/slug'
+import { DateReformed } from './value-object/dateReformed'
 import { Entity } from '@/core/entities/entity'
 import { Optional } from '@/core/types/optional'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
@@ -9,8 +10,8 @@ export interface GameProps {
   title: string
   achievements: Achievement[]
   slug: Slug
-  createdAt: Date
-  updateAt?: Date
+  createdAt: DateReformed
+  updateAt?: DateReformed
 }
 
 export class Game extends Entity<GameProps> {
@@ -39,7 +40,7 @@ export class Game extends Entity<GameProps> {
   }
 
   private touch() {
-    this.props.updateAt = new Date()
+    this.props.updateAt = DateReformed.create(new Date())
   }
 
   set title(title: string) {
@@ -61,7 +62,7 @@ export class Game extends Entity<GameProps> {
       {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),
-        createdAt: props.createdAt ?? new Date(),
+        createdAt: props.createdAt ?? DateReformed.create(new Date()),
       },
       id,
     )

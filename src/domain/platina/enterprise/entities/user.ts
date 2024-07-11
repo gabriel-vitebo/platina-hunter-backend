@@ -2,12 +2,13 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 import { Game } from './game'
+import { DateReformed } from './value-object/dateReformed'
 
 export interface UserProps {
   name: string
   games: Game[]
-  createdAt: Date
-  updateAt?: Date
+  createdAt: DateReformed
+  updateAt?: DateReformed
 }
 
 export class User extends Entity<UserProps> {
@@ -28,7 +29,7 @@ export class User extends Entity<UserProps> {
   }
 
   private touch() {
-    this.props.updateAt = new Date()
+    this.props.updateAt = DateReformed.create(new Date())
   }
 
   set name(name: string) {
@@ -45,7 +46,7 @@ export class User extends Entity<UserProps> {
     const user = new User(
       {
         ...props,
-        createdAt: props.createdAt ?? new Date(),
+        createdAt: props.createdAt ?? DateReformed.create(new Date()),
       },
       id,
     )
