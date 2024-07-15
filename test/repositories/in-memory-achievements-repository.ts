@@ -1,9 +1,8 @@
-import { UniqueEntityId } from "@/core/entities/unique-entity-id";
-import { AchievementsRepository } from "@/domain/platina/application/repositories/achievements-repository";
-import { Achievements } from "@/domain/platina/enterprise/entities/achievements";
+import { AchievementRepository } from "@/domain/platina/application/repositories/achievements-repository";
+import { Achievement } from "@/domain/platina/enterprise/entities/achievement";
 
-export class InMemoryAchievementsRepository implements AchievementsRepository {
-  public items: Achievements[] = []
+export class InMemoryAchievementsRepository implements AchievementRepository {
+  public items: Achievement[] = []
 
   async findById(achievementsId: string) {
     const achievement = this.items.find((item) => item.id.toString() === achievementsId)
@@ -20,17 +19,17 @@ export class InMemoryAchievementsRepository implements AchievementsRepository {
     return achievements
   }
 
-  async create(achievements: Achievements) {
+  async create(achievements: Achievement) {
     this.items.push(achievements)
   }
 
-  async save(achievement: Achievements) {
+  async save(achievement: Achievement) {
     const itemIndex = this.items.findIndex((item) => item.id === achievement.id)
 
     this.items[itemIndex] = achievement
   }
 
-  async delete(achievement: Achievements) {
+  async delete(achievement: Achievement) {
     const itemIndex = this.items.findIndex((item) => item.id === achievement.id)
 
     this.items.splice(itemIndex, 1)
