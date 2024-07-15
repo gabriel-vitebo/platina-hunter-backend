@@ -1,6 +1,9 @@
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Game } from '../../enterprise/entities/game'
+import { Progress } from '../../enterprise/entities/progress'
 import { GamesRepository } from '../repositories/games-repository'
 import { UsersRepository } from '../repositories/users-repository'
+import { ProgressRepository } from '../repositories/progress-repository'
 
 interface AddGameToLibraryUseCaseRequest {
   gameId: string
@@ -14,7 +17,8 @@ interface AddGameToLibraryUseCaseResponse {
 export class AddGameToLibraryUseCase {
   constructor(
     private usersRepository: UsersRepository,
-    private gamesRepository: GamesRepository
+    private gamesRepository: GamesRepository,
+    private progressRepository: ProgressRepository
   ) { }
 
   async execute({
@@ -36,6 +40,15 @@ export class AddGameToLibraryUseCase {
     user.games.push(game)
 
     await this.usersRepository.save(user)
+
+    const progress = Progress.create({
+      user,
+      game,
+      achievementsDone: [],
+      achievementsUndone: game.achievements,
+    }, new UniqueEntityId)
+
+    await this.progressRepository.save(progress)
 
     return {
       game

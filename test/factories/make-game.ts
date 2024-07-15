@@ -24,7 +24,7 @@ export function makeGame(
       description: faker.lorem.text(),
       isItLost: false,
       ...achievementOverride
-    }, id);
+    }, new UniqueEntityId());
 
     game.achievements.push(newAchievement);
   }

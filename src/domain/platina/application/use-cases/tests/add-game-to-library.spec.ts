@@ -4,18 +4,22 @@ import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { AddGameToLibraryUseCase } from "../add-game-to-library";
 import { makeUsers } from "test/factories/make-users";
+import { InMemoryProgressRepository } from "test/repositories/in-memory-progress-repository";
 
 let inMemoryGamesRepository: InMemoryGamesRepository
 let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryProgressRepository: InMemoryProgressRepository
 let sut: AddGameToLibraryUseCase
 
 describe('Add game to Library', () => {
   beforeEach(() => {
     inMemoryGamesRepository = new InMemoryGamesRepository()
     inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryProgressRepository = new InMemoryProgressRepository()
     sut = new AddGameToLibraryUseCase(
       inMemoryUsersRepository,
-      inMemoryGamesRepository
+      inMemoryGamesRepository,
+      inMemoryProgressRepository
     )
   })
 
@@ -24,9 +28,7 @@ describe('Add game to Library', () => {
     await inMemoryUsersRepository.create(user)
 
     for (let i: number = 1; i <= 4; i++) {
-      let game = makeGame(
-        {}, new UniqueEntityId(`game-${i}`)
-      )
+      let game = makeGame({}, {}, i, new UniqueEntityId(`game-${i}`))
 
       await inMemoryGamesRepository.create(game)
 
@@ -34,6 +36,12 @@ describe('Add game to Library', () => {
         userId: user.id.toString(),
         gameId: game.id.toString()
       })
+
+      const progress = await inMemoryProgressRepository.findById(user.id.toString(), game.id.toString());
+
+      expect(progress).toBeDefined();
+      expect(progress?.achievementsUndone).toHaveLength(game.achievements.length);
+      expect(progress?.achievementsDone).toHaveLength(0);
     }
 
     expect(inMemoryUsersRepository.items[0].games).toHaveLength(4)
@@ -44,9 +52,7 @@ describe('Add game to Library', () => {
     await inMemoryUsersRepository.create(user)
 
     for (let i: number = 1; i <= 4; i++) {
-      let game = makeGame(
-        {}, new UniqueEntityId(`game-${i}`)
-      )
+      let game = makeGame({}, {}, 1, new UniqueEntityId(`game-${i}`))
 
       await inMemoryGamesRepository.create(game)
 
