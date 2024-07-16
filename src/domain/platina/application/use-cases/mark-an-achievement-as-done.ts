@@ -9,11 +9,12 @@ interface MarkAnAchievementAsDoneUseCaseRequest {
 }
 
 interface MarkAnAchievementAsDoneUseCaseResponse {
-  achievementsDone: [{
+  achievement: {
     title: string
     isItLost: boolean
     description?: string
-  }]
+    done: boolean
+  }
 }
 
 export class MarkAnAchievementAsDoneUseCase {
@@ -44,15 +45,27 @@ export class MarkAnAchievementAsDoneUseCase {
       throw new Error('progress not found!')
     }
 
-    progress.doneAchievement(achievement)
+    const achievementDone = progress.achievementsDone.find((item) => item.id === achievement.id)
+    let done: boolean
+
+
+    if (achievementDone) {
+      progress.undoneAchievement(achievement)
+      done = false
+    } else {
+      progress.doneAchievement(achievement)
+      done = true
+    }
+
     await this.progressRepository.save(progress)
 
     return {
-      achievementsDone: [{
+      achievement: {
         title: achievement.title,
         isItLost: achievement.isItLost,
-        description: achievement.description || ''
-      }]
+        description: achievement.description || '',
+        done: done
+      }
     }
 
   }

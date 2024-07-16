@@ -49,7 +49,7 @@ export class Progress extends Entity<ProgressProps> {
   }
 
   undoneAchievement(achievement: Achievement) {
-    const achievementIndex = this.props.achievementsUndone.findIndex((item) => item.id === achievement.id)
+    const achievementIndex = this.props.achievementsDone.findIndex((item) => item.id === achievement.id)
 
     if (achievementIndex === -1) {
       throw new Error('Achievement not found')

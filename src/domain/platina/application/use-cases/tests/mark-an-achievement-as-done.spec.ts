@@ -43,13 +43,46 @@ describe('Mark An Achievement As Done', () => {
 
     await inMemoryProgressRepository.create(progress)
 
-    const { achievementsDone } = await sut.execute({
+    const { achievement } = await sut.execute({
       gameId: game.id.toString(),
       userId: user.id.toString(),
       achievementId: achievementId.toString(),
     })
 
-    expect(achievementsDone).toHaveLength(1)
-    expect(achievementsDone[0].title).toEqual(progress.achievementsDone[0].title)
+    expect(achievement).toBeTruthy()
+    expect(achievement.title).toEqual(progress.achievementsDone[0].title)
+    expect(achievement.done).toBe(true)
+  })
+
+  it('should be able to unmark an achievement as done', async () => {
+    const user = makeUsers()
+    await inMemoryUsersRepository.create(user)
+    const game = makeGame({}, {}, 2)
+
+    for (const achievement of game.achievements) {
+      await inMemoryAchievementsRepository.create(achievement)
+    }
+    const achievementId = game.achievements[0].id
+
+    const progress = Progress.create({
+      user,
+      game,
+      achievementsDone: [game.achievements[0]],
+      achievementsUndone: game.achievements.slice(1)
+    }, new UniqueEntityId())
+
+    await inMemoryProgressRepository.create(progress)
+
+    const { achievement } = await sut.execute({
+      gameId: game.id.toString(),
+      userId: user.id.toString(),
+      achievementId: achievementId.toString(),
+    })
+
+    expect(achievement).toBeTruthy()
+    expect(achievement.title).toEqual(game.achievements[0].title)
+    expect(progress.achievementsDone).toHaveLength(0)
+    expect(progress.achievementsUndone).toHaveLength(2)
+    expect(achievement.done).toBe(false)
   })
 })
