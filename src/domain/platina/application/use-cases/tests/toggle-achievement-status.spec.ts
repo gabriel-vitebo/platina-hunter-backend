@@ -3,21 +3,21 @@ import { makeGame } from "test/factories/make-game";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { makeUsers } from "test/factories/make-users";
-import { MarkAnAchievementAsDoneUseCase } from "../mark-an-achievement-as-done";
+import { ToggleAchievementStatusUseCase } from "../toggle-achievement-status";
 import { InMemoryProgressRepository } from "test/repositories/in-memory-progress-repository";
 import { Progress } from "@/domain/platina/enterprise/entities/progress";
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryAchievementsRepository: InMemoryAchievementsRepository
 let inMemoryProgressRepository: InMemoryProgressRepository
-let sut: MarkAnAchievementAsDoneUseCase
+let sut: ToggleAchievementStatusUseCase
 
 describe('Mark An Achievement As Done', () => {
   beforeEach(() => {
     inMemoryAchievementsRepository = new InMemoryAchievementsRepository()
     inMemoryUsersRepository = new InMemoryUsersRepository()
     inMemoryProgressRepository = new InMemoryProgressRepository()
-    sut = new MarkAnAchievementAsDoneUseCase(
+    sut = new ToggleAchievementStatusUseCase(
       inMemoryUsersRepository,
       inMemoryAchievementsRepository,
       inMemoryProgressRepository

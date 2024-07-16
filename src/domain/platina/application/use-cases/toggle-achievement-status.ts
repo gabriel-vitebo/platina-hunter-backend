@@ -2,13 +2,13 @@ import { AchievementRepository } from '../repositories/achievements-repository'
 import { ProgressRepository } from '../repositories/progress-repository'
 import { UsersRepository } from '../repositories/users-repository'
 
-interface MarkAnAchievementAsDoneUseCaseRequest {
+interface ToggleAchievementStatusUseCaseRequest {
   gameId: string
   userId: string
   achievementId: string
 }
 
-interface MarkAnAchievementAsDoneUseCaseResponse {
+interface ToggleAchievementStatusUseCaseResponse {
   achievement: {
     title: string
     isItLost: boolean
@@ -17,7 +17,7 @@ interface MarkAnAchievementAsDoneUseCaseResponse {
   }
 }
 
-export class MarkAnAchievementAsDoneUseCase {
+export class ToggleAchievementStatusUseCase {
   constructor(
     private usersRepository: UsersRepository,
     private achievementRepository: AchievementRepository,
@@ -28,7 +28,7 @@ export class MarkAnAchievementAsDoneUseCase {
     gameId,
     userId,
     achievementId
-  }: MarkAnAchievementAsDoneUseCaseRequest): Promise<MarkAnAchievementAsDoneUseCaseResponse> {
+  }: ToggleAchievementStatusUseCaseRequest): Promise<ToggleAchievementStatusUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
