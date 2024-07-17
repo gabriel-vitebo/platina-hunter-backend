@@ -5,6 +5,7 @@ import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repos
 import { AddGameToLibraryUseCase } from "../add-game-to-library";
 import { makeUsers } from "test/factories/make-users";
 import { InMemoryProgressRepository } from "test/repositories/in-memory-progress-repository";
+import { title } from "process";
 
 let inMemoryGamesRepository: InMemoryGamesRepository
 let inMemoryUsersRepository: InMemoryUsersRepository

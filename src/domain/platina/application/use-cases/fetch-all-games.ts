@@ -1,4 +1,3 @@
-import { Game } from '../../enterprise/entities/game'
 import { GamesRepository } from '../repositories/games-repository'
 
 interface FetchAllGamesUseCaseRequest {
@@ -7,7 +6,8 @@ interface FetchAllGamesUseCaseRequest {
 
 interface FetchAllGamesUseCaseResponse {
   games: {
-    title: string
+    title: string,
+    achievementsCount: number
   }[]
 }
 
@@ -19,7 +19,8 @@ export class FetchAllGamesUseCase {
 
     return {
       games: games.map((game) => ({
-        title: game.title
+        title: game.title,
+        achievementsCount: game.achievements.length
       }))
     }
   }

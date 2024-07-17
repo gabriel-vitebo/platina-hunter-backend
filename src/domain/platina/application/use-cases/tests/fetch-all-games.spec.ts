@@ -13,7 +13,7 @@ describe('Fetch All Games', () => {
 
   it('should be able to fetch all games', async () => {
     await inMemoryGamesRepository.create(
-      makeGame({ title: 'Elden Ring' })
+      makeGame({ title: 'Elden Ring' }, {}, 3)
     )
     await inMemoryGamesRepository.create(
       makeGame({ title: 'assassins creed' })
@@ -27,9 +27,18 @@ describe('Fetch All Games', () => {
     })
 
     expect(games).toEqual([
-      expect.objectContaining({ title: 'assassins creed' }),
-      expect.objectContaining({ title: 'detroit become human' }),
-      expect.objectContaining({ title: 'Elden Ring' })
+      expect.objectContaining({
+        title: 'assassins creed',
+        achievementsCount: 1
+      }),
+      expect.objectContaining({
+        title: 'detroit become human',
+        achievementsCount: 1
+      }),
+      expect.objectContaining({
+        title: 'Elden Ring',
+        achievementsCount: 3
+      })
     ])
   })
 

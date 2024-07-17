@@ -25,7 +25,7 @@ describe('Get Game By Slug', () => {
 
     expect(game.id).toBeTruthy()
     expect(game.title).toEqual(newGame.title)
-    expect(game.numberOfAchievements).toEqual(4)
+    expect(game.achievementsCount).toEqual(4)
 
   })
 })

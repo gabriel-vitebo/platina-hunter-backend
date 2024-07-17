@@ -48,7 +48,6 @@ export class ToggleAchievementStatusUseCase {
     const achievementDone = progress.achievementsDone.find((item) => item.id === achievement.id)
     let done: boolean
 
-
     if (achievementDone) {
       progress.undoneAchievement(achievement)
       done = false

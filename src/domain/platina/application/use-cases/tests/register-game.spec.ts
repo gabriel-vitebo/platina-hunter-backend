@@ -14,7 +14,7 @@ describe('Register new Game', () => {
   })
 
   it('should be able to register a new game', async () => {
-    const { game, achievements } = await sut.execute({
+    const { title, achievementsCount } = await sut.execute({
       userId: '1',
       title: 'Jogo Teste',
       achievements: [
@@ -36,13 +36,9 @@ describe('Register new Game', () => {
       ]
     })
 
-    expect(game.id).toBeTruthy()
-    expect(inMemoryGamesRepository.items[0].id).toEqual(game.id)
-    expect(achievements).toHaveLength(3)
+    expect(inMemoryGamesRepository.items[0].title).toEqual(title)
+    expect(achievementsCount).toEqual(3)
     expect(inMemoryAchievementsRepository.items).toHaveLength(3)
-    expect(game.achievements[0].title).toEqual('Primeira Conquista Teste')
-    expect(game.achievements[0].gameId).toEqual(game.id)
-
   })
 
   it('should not be able to register a new game without achievements', async () => {

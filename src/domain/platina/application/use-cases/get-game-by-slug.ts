@@ -8,7 +8,7 @@ interface GetGameBySlugUseCaseResponse {
   game: {
     id: string,
     title: string,
-    numberOfAchievements: number
+    achievementsCount: number
   }
 }
 
@@ -25,7 +25,7 @@ export class GetGameBySlugUseCase {
       game: {
         id: game.id.toString(),
         title: game.title,
-        numberOfAchievements: game.achievements.length,
+        achievementsCount: game.achievements.length,
       }
     }
   }

@@ -1,5 +1,4 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Game } from '../../enterprise/entities/game'
 import { Progress } from '../../enterprise/entities/progress'
 import { GamesRepository } from '../repositories/games-repository'
 import { UsersRepository } from '../repositories/users-repository'
@@ -10,9 +9,7 @@ interface AddGameToLibraryUseCaseRequest {
   userId: string
 }
 
-interface AddGameToLibraryUseCaseResponse {
-  game: Game
-}
+interface AddGameToLibraryUseCaseResponse { }
 
 export class AddGameToLibraryUseCase {
   constructor(
@@ -50,8 +47,6 @@ export class AddGameToLibraryUseCase {
 
     await this.progressRepository.save(progress)
 
-    return {
-      game
-    }
+    return {}
   }
 }

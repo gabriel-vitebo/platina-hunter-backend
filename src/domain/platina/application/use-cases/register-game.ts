@@ -15,8 +15,8 @@ interface RegisterGameUseCaseRequest {
 }
 
 interface RegisterGameUseCaseResponse {
-  game: Game
-  achievements: Achievement[]
+  title: string
+  achievementsCount: number
 }
 
 export class RegisterGameUseCase {
@@ -59,9 +59,12 @@ export class RegisterGameUseCase {
 
     await this.gameRepository.save(game)
 
+    game.achievements.length
+    game.title
+
     return {
-      game,
-      achievements: achievementInstances
+      title: game.title,
+      achievementsCount: game.achievements.length
     }
   }
 }
