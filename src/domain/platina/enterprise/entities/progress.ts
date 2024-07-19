@@ -59,6 +59,17 @@ export class Progress extends Entity<ProgressProps> {
     this.props.achievementsUndone.push(achieved)
   }
 
+  calculateThePercentageOfAchievements() {
+    const totalAchievements = this.props.achievementsDone.length + this.props.achievementsUndone.length
+
+    if (totalAchievements === 0) {
+      return 0
+    }
+
+    const percentage = (this.props.achievementsDone.length / totalAchievements) * 100
+    return percentage
+  }
+
   static create(
     props: Optional<ProgressProps, 'achievementsDone' | 'achievementsUndone'>,
     id?: UniqueEntityId,
