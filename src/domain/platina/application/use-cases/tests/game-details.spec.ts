@@ -3,6 +3,9 @@ import { GameDetailsUseCase } from "../game-details";
 import { makeGame } from "test/factories/make-game";
 import { Slug } from "../../../enterprise/entities/value-object/slug";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
+import { Game } from "@/domain/platina/enterprise/entities/game";
+import { title } from "process";
+import { Achievement } from "@/domain/platina/enterprise/entities/achievement";
 
 let inMemoryGamesRepository: InMemoryGamesRepository
 let sut: GameDetailsUseCase

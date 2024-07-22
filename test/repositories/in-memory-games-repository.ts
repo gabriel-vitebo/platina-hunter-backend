@@ -35,6 +35,14 @@ export class InMemoryGamesRepository implements GamesRepository {
 
 
   async create(game: Game) {
+    const isEqual = this.items.find(item => {
+      item.slug === game.slug
+    })
+
+    if (Boolean(isEqual)) {
+      throw new Error('Not Allow!')
+    }
+
     this.items.push(game)
   }
 

@@ -6,10 +6,7 @@ import { makeUsers } from "test/factories/make-users";
 import { ProgressDetailsUseCase } from "../progress-details";
 import { InMemoryProgressRepository } from "test/repositories/in-memory-progress-repository";
 import { Progress } from "@/domain/platina/enterprise/entities/progress";
-import { AddGameToLibraryUseCase } from "../add-game-to-library";
-import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
 import { ToggleAchievementStatusUseCase } from "../toggle-achievement-status";
-import { a } from "vitest/dist/suite-IbNSsUWN";
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryAchievementsRepository: InMemoryAchievementsRepository
@@ -59,7 +56,6 @@ describe('Progress Details', () => {
 
     expect(progress).toBeTruthy()
     expect(progress.title).toEqual(userProgress.game.title)
-    expect(progress.achievementsCount).toEqual(4)
   })
 
   it('should be able to get a progress percentage', async () => {
@@ -95,9 +91,8 @@ describe('Progress Details', () => {
 
     expect(progress).toBeTruthy()
     expect(progress.title).toEqual(userProgress.game.title)
-    expect(progress.achievementsCount).toEqual(4)
     expect(progress.achievementsDone).toHaveLength(1)
-    expect(progress.percentage).toEqual(25)
+    expect(userProgress.game.achievements).toHaveLength(1)
+    expect(progress.percentage).toEqual(0.25)
   })
-
 })

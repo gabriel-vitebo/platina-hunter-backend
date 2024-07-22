@@ -9,8 +9,6 @@ interface ProgressDetailsUseCaseResponse {
   progress: {
     id: string,
     title: string,
-    achievementsCount: number,
-    achievementsDoneCount: number,
     percentage: number,
     achievementsDone: Array<{
       title: string,
@@ -34,16 +32,12 @@ export class ProgressDetailsUseCase {
       throw new Error('Progress Not Found!')
     }
 
-    const achievementsCount = progress.achievementsDone.length + progress.achievementsUndone.length
-    const achievementsDoneCount = progress.achievementsDone.length
     const percentage = progress.calculateThePercentageOfAchievements()
 
     return {
       progress: {
         id: progress.id.toString(),
         title: progress.game.title,
-        achievementsCount,
-        achievementsDoneCount,
         percentage,
         achievementsDone: progress.achievementsDone.map((item) => ({
           title: item.title,

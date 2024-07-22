@@ -1,8 +1,8 @@
-import { PaginationParams } from '@/core/repositories/pagination-params'
 import { UsersRepository } from '../repositories/users-repository'
 
-interface FetchAllUserGamesUseCaseRequest extends PaginationParams {
+interface FetchAllUserGamesUseCaseRequest {
   userId: string,
+  page: number
 }
 
 interface FetchAllUserGamesUseCaseResponse {

@@ -59,6 +59,22 @@ export class Progress extends Entity<ProgressProps> {
     this.props.achievementsUndone.push(achieved)
   }
 
+  toggleAchievement(achievement: Achievement) {
+    const achievementDone = this.achievementsDone.find((item) => item.id === achievement.id)
+
+    if (achievementDone) {
+      this.undoneAchievement(achievement)
+    } else {
+      this.doneAchievement(achievement)
+    }
+  }
+
+  isDone(achievement: Achievement) {
+    const achievementDone = this.achievementsDone.find((item) => item.id === achievement.id)
+
+    return Boolean(achievementDone)
+  }
+
   calculateThePercentageOfAchievements() {
     const totalAchievements = this.props.achievementsDone.length + this.props.achievementsUndone.length
 
@@ -66,7 +82,7 @@ export class Progress extends Entity<ProgressProps> {
       return 0
     }
 
-    const percentage = (this.props.achievementsDone.length / totalAchievements) * 100
+    const percentage = this.props.achievementsDone.length / totalAchievements
     return percentage
   }
 
@@ -77,8 +93,8 @@ export class Progress extends Entity<ProgressProps> {
     const progress = new Progress(
       {
         ...props,
-        achievementsDone: props.achievementsDone ?? [],
-        achievementsUndone: props.achievementsUndone ?? [],
+        achievementsDone: [...(props.achievementsDone ?? [])],
+        achievementsUndone: [...(props.achievementsUndone ?? [])],
       },
       id,
     )

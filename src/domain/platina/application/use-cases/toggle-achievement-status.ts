@@ -13,7 +13,7 @@ interface ToggleAchievementStatusUseCaseResponse {
     title: string
     isItLost: boolean
     description?: string
-    done: boolean
+    isDone: boolean
   }
 }
 
@@ -45,16 +45,7 @@ export class ToggleAchievementStatusUseCase {
       throw new Error('progress not found!')
     }
 
-    const achievementDone = progress.achievementsDone.find((item) => item.id === achievement.id)
-    let done: boolean
-
-    if (achievementDone) {
-      progress.undoneAchievement(achievement)
-      done = false
-    } else {
-      progress.doneAchievement(achievement)
-      done = true
-    }
+    progress.toggleAchievement(achievement)
 
     await this.progressRepository.save(progress)
 
@@ -63,9 +54,8 @@ export class ToggleAchievementStatusUseCase {
         title: achievement.title,
         isItLost: achievement.isItLost,
         description: achievement.description || '',
-        done: done
+        isDone: progress.isDone(achievement)
       }
     }
-
   }
 }
