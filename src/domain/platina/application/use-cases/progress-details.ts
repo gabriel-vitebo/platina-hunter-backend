@@ -15,7 +15,7 @@ interface ProgressDetailsUseCaseResponse {
       description?: string,
       isItLost: boolean
     }>,
-    achievementsUndone: Array<{
+    achievementsPending: Array<{
       title: string,
       description?: string,
       isItLost: boolean
@@ -44,7 +44,7 @@ export class ProgressDetailsUseCase {
           description: item.description,
           isItLost: item.isItLost
         })),
-        achievementsUndone: progress.achievementsUndone.map((item) => ({
+        achievementsPending: progress.achievementsPending.map((item) => ({
           title: item.title,
           description: item.description,
           isItLost: item.isItLost

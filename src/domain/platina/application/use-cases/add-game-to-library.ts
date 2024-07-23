@@ -42,7 +42,7 @@ export class AddGameToLibraryUseCase {
       user,
       game,
       achievementsDone: [],
-      achievementsUndone: game.achievements,
+      achievementsPending: game.achievements,
     }, new UniqueEntityId)
 
     await this.progressRepository.save(progress)

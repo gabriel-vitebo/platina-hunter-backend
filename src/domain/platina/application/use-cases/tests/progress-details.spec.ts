@@ -44,7 +44,7 @@ describe('Progress Details', () => {
       user,
       game,
       achievementsDone: [],
-      achievementsUndone: game.achievements
+      achievementsPending: game.achievements
     }, new UniqueEntityId())
 
     await inMemoryProgressRepository.create(userProgress)
@@ -71,7 +71,7 @@ describe('Progress Details', () => {
       user,
       game,
       achievementsDone: [],
-      achievementsUndone: game.achievements
+      achievementsPending: game.achievements
     }, new UniqueEntityId())
 
     await inMemoryProgressRepository.create(userProgress)

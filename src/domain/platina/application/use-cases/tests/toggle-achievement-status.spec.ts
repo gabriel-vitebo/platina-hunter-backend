@@ -38,7 +38,7 @@ describe('Mark An Achievement As Done', () => {
       user,
       game,
       achievementsDone: [],
-      achievementsUndone: game.achievements
+      achievementsPending: game.achievements
     }, new UniqueEntityId())
 
     await inMemoryProgressRepository.create(progress)
@@ -68,7 +68,7 @@ describe('Mark An Achievement As Done', () => {
       user,
       game,
       achievementsDone: [game.achievements[0]],
-      achievementsUndone: game.achievements.slice(1)
+      achievementsPending: game.achievements.slice(1)
     }, new UniqueEntityId())
 
     await inMemoryProgressRepository.create(progress)
@@ -82,7 +82,7 @@ describe('Mark An Achievement As Done', () => {
     expect(achievement).toBeTruthy()
     expect(achievement.title).toEqual(game.achievements[0].title)
     expect(progress.achievementsDone).toHaveLength(0)
-    expect(progress.achievementsUndone).toHaveLength(2)
+    expect(progress.achievementsPending).toHaveLength(2)
     expect(achievement.isDone).toBe(false)
   })
 })
