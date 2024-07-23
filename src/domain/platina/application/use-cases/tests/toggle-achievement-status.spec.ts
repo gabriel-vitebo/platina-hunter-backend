@@ -51,7 +51,7 @@ describe('Mark An Achievement As Done', () => {
 
     expect(achievement).toBeTruthy()
     expect(achievement.title).toEqual(progress.achievementsDone[0].title)
-    expect(achievement.done).toBe(true)
+    expect(achievement.isDone).toBe(true)
   })
 
   it('should be able to unmark an achievement as done', async () => {
@@ -83,6 +83,6 @@ describe('Mark An Achievement As Done', () => {
     expect(achievement.title).toEqual(game.achievements[0].title)
     expect(progress.achievementsDone).toHaveLength(0)
     expect(progress.achievementsUndone).toHaveLength(2)
-    expect(achievement.done).toBe(false)
+    expect(achievement.isDone).toBe(false)
   })
 })

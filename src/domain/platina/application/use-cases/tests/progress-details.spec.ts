@@ -92,7 +92,7 @@ describe('Progress Details', () => {
     expect(progress).toBeTruthy()
     expect(progress.title).toEqual(userProgress.game.title)
     expect(progress.achievementsDone).toHaveLength(1)
-    expect(userProgress.game.achievements).toHaveLength(1)
+    expect(userProgress.game.achievements).toHaveLength(4)
     expect(progress.percentage).toEqual(0.25)
   })
 })
