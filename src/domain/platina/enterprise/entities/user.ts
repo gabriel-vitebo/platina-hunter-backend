@@ -1,12 +1,12 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
-import { Game } from './game'
 import { DateReformed } from './value-object/dateReformed'
+import { Progress } from './progress'
 
 export interface UserProps {
   name: string
-  games: Game[]
+  games: Progress[]
   createdAt: DateReformed
   updateAt?: DateReformed
 }
@@ -37,9 +37,20 @@ export class User extends Entity<UserProps> {
     this.touch()
   }
 
-  set games(games: Game[]) {
+  set games(games: Progress[]) {
     this.props.games = games
     this.touch()
+  }
+
+  findGameById(gameId: UniqueEntityId) {
+    const game = this.games.find(item => item.id === gameId)
+
+    if (!game) {
+      throw new Error('game not found!')
+    }
+
+    return game
+
   }
 
   static create(props: Optional<UserProps, 'createdAt'>, id?: UniqueEntityId) {

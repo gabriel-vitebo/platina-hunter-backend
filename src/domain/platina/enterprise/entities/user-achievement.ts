@@ -45,10 +45,15 @@ export class UserAchievement extends Entity<UserAchievementProps> {
     this.update()
   }
 
+  toggleDone() {
+    this.props.isDone = !this.props.isDone
+  }
+
   static create(props: Optional<UserAchievementProps, 'createdAt'>, id?: UniqueEntityId) {
     const userAchievement = new UserAchievement(
       {
         ...props,
+
         createdAt: props.createdAt ?? DateReformed.create(new Date()),
       },
       id,

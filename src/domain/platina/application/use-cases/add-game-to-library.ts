@@ -3,6 +3,7 @@ import { Progress } from '../../enterprise/entities/progress'
 import { GamesRepository } from '../repositories/games-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import { ProgressRepository } from '../repositories/progress-repository'
+import { UserAchievement } from '../../enterprise/entities/user-achievement'
 
 interface AddGameToLibraryUseCaseRequest {
   gameId: string
@@ -34,15 +35,19 @@ export class AddGameToLibraryUseCase {
       throw new Error('User not found!')
     }
 
-    user.games.push(game)
+    user.games.push(game) //todo
 
-    await this.usersRepository.save(user)
+    const userAchievements = game.achievements.map((item) => {
+      return UserAchievement.create({
+        achievement: item,
+        isDone: false,
+      })
+    })
 
     const progress = Progress.create({
       user,
       game,
-      achievementsDone: [],
-      achievementsPending: game.achievements,
+      userAchievements,
     }, new UniqueEntityId)
 
     await this.progressRepository.save(progress)

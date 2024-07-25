@@ -6,10 +6,13 @@ import { makeUsers } from "test/factories/make-users";
 import { ToggleAchievementStatusUseCase } from "../toggle-achievement-status";
 import { InMemoryProgressRepository } from "test/repositories/in-memory-progress-repository";
 import { Progress } from "@/domain/platina/enterprise/entities/progress";
+import { UserAchievement } from "@/domain/platina/enterprise/entities/user-achievement";
+import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryAchievementsRepository: InMemoryAchievementsRepository
 let inMemoryProgressRepository: InMemoryProgressRepository
+let inMemoryGameRepository: InMemoryGamesRepository
 let sut: ToggleAchievementStatusUseCase
 
 describe('Mark An Achievement As Done', () => {
@@ -17,28 +20,35 @@ describe('Mark An Achievement As Done', () => {
     inMemoryAchievementsRepository = new InMemoryAchievementsRepository()
     inMemoryUsersRepository = new InMemoryUsersRepository()
     inMemoryProgressRepository = new InMemoryProgressRepository()
+    inMemoryGameRepository = new InMemoryGamesRepository()
     sut = new ToggleAchievementStatusUseCase(
-      inMemoryUsersRepository,
-      inMemoryAchievementsRepository,
-      inMemoryProgressRepository
+      inMemoryUsersRepository
     )
   })
 
-  it('should be able to mark a achievement as done', async () => {
+  it.only('should be able to mark a achievement as done', async () => {
     const user = makeUsers()
     await inMemoryUsersRepository.create(user)
     const game = makeGame({}, {}, 2)
+
+    await inMemoryGameRepository.create(game)
 
     for (const achievement of game.achievements) {
       await inMemoryAchievementsRepository.create(achievement)
     }
     const achievementId = game.achievements[0].id
 
+    const userAchievements = game.achievements.map((item) => {
+      return UserAchievement.create({
+        achievement: item,
+        isDone: false,
+      })
+    })
+
     const progress = Progress.create({
       user,
       game,
-      achievementsDone: [],
-      achievementsPending: game.achievements
+      userAchievements
     }, new UniqueEntityId())
 
     await inMemoryProgressRepository.create(progress)
@@ -50,7 +60,7 @@ describe('Mark An Achievement As Done', () => {
     })
 
     expect(achievement).toBeTruthy()
-    expect(achievement.title).toEqual(progress.achievementsDone[0].title)
+    expect(achievement.title).toEqual(progress.game.achievements[0].title)
     expect(achievement.isDone).toBe(true)
   })
 

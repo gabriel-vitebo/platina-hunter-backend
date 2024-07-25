@@ -40,8 +40,8 @@ describe('Add game to Library', () => {
       const progress = await inMemoryProgressRepository.findById(user.id.toString(), game.id.toString());
 
       expect(progress).toBeDefined();
-      expect(progress?.achievementsPending).toHaveLength(game.achievements.length);
-      expect(progress?.achievementsDone).toHaveLength(0);
+      expect(progress?.userAchievements).toHaveLength(game.achievements.length);
+      expect(progress?.getAchievementsDone).toHaveLength(0);
     }
 
     expect(inMemoryUsersRepository.items[0].games).toHaveLength(4)

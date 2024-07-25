@@ -1,5 +1,4 @@
-import { AchievementRepository } from '../repositories/achievements-repository'
-import { ProgressRepository } from '../repositories/progress-repository'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { UsersRepository } from '../repositories/users-repository'
 
 interface ToggleAchievementStatusUseCaseRequest {
@@ -20,8 +19,6 @@ interface ToggleAchievementStatusUseCaseResponse {
 export class ToggleAchievementStatusUseCase {
   constructor(
     private usersRepository: UsersRepository,
-    private achievementRepository: AchievementRepository,
-    private progressRepository: ProgressRepository,
   ) { }
 
   async execute({
@@ -34,27 +31,15 @@ export class ToggleAchievementStatusUseCase {
     if (!user) {
       throw new Error('User not found!')
     }
-
-    const achievement = await this.achievementRepository.findById(achievementId)
-    if (!achievement) {
-      throw new Error('Achievement not found!')
-    }
-
-    let progress = await this.progressRepository.findById(userId, gameId)
-    if (!progress) {
-      throw new Error('progress not found!')
-    }
-
-    progress.toggleAchievement(achievement)
-
-    await this.progressRepository.save(progress)
+    const game = user.findGameById(new UniqueEntityId(gameId))
+    const userAchievement = game.findUserAchievementById(new UniqueEntityId(achievementId))
 
     return {
       achievement: {
-        title: achievement.title,
-        isItLost: achievement.isItLost,
-        description: achievement.description || '',
-        isDone: progress.isDone(achievement)
+        title: userAchievement.achievement.title,
+        isItLost: userAchievement.achievement.isItLost,
+        description: userAchievement.achievement.description || '',
+        isDone: userAchievement.isDone
       }
     }
   }

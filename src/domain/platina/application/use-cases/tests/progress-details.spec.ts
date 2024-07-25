@@ -7,6 +7,7 @@ import { ProgressDetailsUseCase } from "../progress-details";
 import { InMemoryProgressRepository } from "test/repositories/in-memory-progress-repository";
 import { Progress } from "@/domain/platina/enterprise/entities/progress";
 import { ToggleAchievementStatusUseCase } from "../toggle-achievement-status";
+import { UserAchievement } from "@/domain/platina/enterprise/entities/user-achievement";
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryAchievementsRepository: InMemoryAchievementsRepository
@@ -40,11 +41,17 @@ describe('Progress Details', () => {
       await inMemoryAchievementsRepository.create(achievement)
     }
 
+    const userAchievements = game.achievements.map((item) => {
+      return UserAchievement.create({
+        achievement: item,
+        isDone: false,
+      })
+    })
+
     const userProgress = Progress.create({
       user,
       game,
-      achievementsDone: [],
-      achievementsPending: game.achievements
+      userAchievements
     }, new UniqueEntityId())
 
     await inMemoryProgressRepository.create(userProgress)
@@ -67,11 +74,17 @@ describe('Progress Details', () => {
       await inMemoryAchievementsRepository.create(achievement)
     }
 
+    const userAchievements = game.achievements.map((item) => {
+      return UserAchievement.create({
+        achievement: item,
+        isDone: false,
+      })
+    })
+
     const userProgress = Progress.create({
       user,
       game,
-      achievementsDone: [],
-      achievementsPending: game.achievements
+      userAchievements
     }, new UniqueEntityId())
 
     await inMemoryProgressRepository.create(userProgress)
@@ -89,9 +102,11 @@ describe('Progress Details', () => {
       gameId: game.id.toString(),
     })
 
+    const doneCount = progress.achievements.filter(item => item.isDone).length
+
     expect(progress).toBeTruthy()
     expect(progress.title).toEqual(userProgress.game.title)
-    expect(progress.achievementsDone).toHaveLength(1)
+    expect(doneCount).toHaveLength(1)
     expect(userProgress.game.achievements).toHaveLength(4)
     expect(progress.percentage).toEqual(0.25)
   })

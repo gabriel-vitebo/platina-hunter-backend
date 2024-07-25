@@ -1,15 +1,14 @@
 import { Entity } from '@/core/entities/entity'
 import { Game } from './game'
 import { User } from './user'
-import { Achievement } from './achievement'
 import { Optional } from '@/core/types/optional'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { UserAchievement } from './user-achievement'
 
 export interface ProgressProps {
   game: Game
   user: User
-  achievementsDone: Achievement[]
-  achievementsPending: Achievement[]
+  userAchievements: UserAchievement[]
 }
 
 export class Progress extends Entity<ProgressProps> {
@@ -21,80 +20,50 @@ export class Progress extends Entity<ProgressProps> {
     return this.props.user
   }
 
-  get achievementsDone() {
-    return this.props.achievementsDone
+  get userAchievements() {
+    return this.props.userAchievements
   }
 
-  get achievementsPending() {
-    return this.props.achievementsPending
+  set userAchievements(userAchievements: UserAchievement[]) {
+    this.props.userAchievements = userAchievements
   }
 
-  set achievementsDone(achievementsDone: Achievement[]) {
-    this.props.achievementsDone = achievementsDone
+  getAchievementsDone() {
+    return this.props.userAchievements.filter(item => item.isDone)
   }
 
-  set achievementsPending(achievementsPending: Achievement[]) {
-    this.props.achievementsPending = achievementsPending
+  getUndoAchievements() {
+    return this.props.userAchievements.filter(item => !item.isDone)
   }
 
-  doneAchievement(achievement: Achievement) {
-    const achievementIndex = this.props.achievementsPending.findIndex((item) => item.id === achievement.id)
-
-    if (achievementIndex === -1) {
-      throw new Error('Achievement not found')
-    }
-
-    const [achieved] = this.props.achievementsPending.splice(achievementIndex, 1)
-    this.props.achievementsDone.push(achieved)
-  }
-
-  undoAchievement(achievement: Achievement) {
-    const achievementIndex = this.props.achievementsDone.findIndex((item) => item.id === achievement.id)
-
-    if (achievementIndex === -1) {
-      throw new Error('Achievement not found')
-    }
-
-    const [achieved] = this.props.achievementsDone.splice(achievementIndex, 1)
-    this.props.achievementsPending.push(achieved)
-  }
-
-  toggleAchievement(achievement: Achievement) {
-    const achievementDone = this.achievementsDone.find((item) => item.id === achievement.id)
-
-    if (achievementDone) {
-      this.undoAchievement(achievement)
-    } else {
-      this.doneAchievement(achievement)
-    }
-  }
-
-  isDone(achievement: Achievement) {
-    const achievementDone = this.achievementsDone.find((item) => item.id === achievement.id)
-
-    return Boolean(achievementDone)
+  getAllAchievements() {
+    return this.props.userAchievements
   }
 
   calculateThePercentageOfAchievements() {
-    const totalAchievements = this.props.achievementsDone.length + this.props.achievementsPending.length
-
-    if (totalAchievements === 0) {
-      return 0
-    }
-
-    const percentage = this.props.achievementsDone.length / totalAchievements
+    const percentage = this.getAchievementsDone().length / this.getUndoAchievements().length
     return percentage
   }
 
+  findUserAchievementById(achievementId: UniqueEntityId) {
+    const userAchievement = this.userAchievements.find(item => item.id === achievementId)
+
+    if (!userAchievement) {
+      throw new Error('achievement not found!')
+    }
+
+    return userAchievement
+
+  }
+
   static create(
-    props: Optional<ProgressProps, 'achievementsDone' | 'achievementsPending'>,
+    props: Optional<ProgressProps, 'userAchievements'>,
     id?: UniqueEntityId,
   ) {
     const progress = new Progress(
       {
         ...props,
-        achievementsDone: [...(props.achievementsDone ?? [])],
-        achievementsPending: [...(props.achievementsPending ?? [])],
+        userAchievements: [...(props.userAchievements ?? [])]
       },
       id,
     )

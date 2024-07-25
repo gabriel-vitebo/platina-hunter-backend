@@ -1,3 +1,4 @@
+import { i } from 'vitest/dist/reporters-yx5ZTtEV'
 import { ProgressRepository } from '../repositories/progress-repository'
 
 interface ProgressDetailsUseCaseRequest {
@@ -10,15 +11,11 @@ interface ProgressDetailsUseCaseResponse {
     id: string,
     title: string,
     percentage: number,
-    achievementsDone: Array<{
+    achievements: Array<{
       title: string,
       description?: string,
-      isItLost: boolean
-    }>,
-    achievementsPending: Array<{
-      title: string,
-      description?: string,
-      isItLost: boolean
+      isItLost: boolean,
+      isDone: boolean
     }>,
   }
 }
@@ -32,6 +29,7 @@ export class ProgressDetailsUseCase {
       throw new Error('Progress Not Found!')
     }
 
+    const achievements = progress.getAllAchievements()
     const percentage = progress.calculateThePercentageOfAchievements()
 
     return {
@@ -39,15 +37,11 @@ export class ProgressDetailsUseCase {
         id: progress.id.toString(),
         title: progress.game.title,
         percentage,
-        achievementsDone: progress.achievementsDone.map((item) => ({
-          title: item.title,
-          description: item.description,
-          isItLost: item.isItLost
-        })),
-        achievementsPending: progress.achievementsPending.map((item) => ({
-          title: item.title,
-          description: item.description,
-          isItLost: item.isItLost
+        achievements: achievements.map((item) => ({
+          title: item.achievement.title,
+          description: item.achievement.description,
+          isItLost: item.achievement.isItLost,
+          isDone: item.isDone
         })),
       }
     }
