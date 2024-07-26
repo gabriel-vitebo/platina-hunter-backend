@@ -5,14 +5,14 @@ interface DeleteGameUseCaseRequest {
   gameId: string
 }
 
-interface DeleteGameUseCaseResponse { }
+interface DeleteGameUseCaseResponse {}
 
 export class DeleteGameUseCase {
-  constructor(private gameRepository: GamesRepository) { }
+  constructor(private gameRepository: GamesRepository) {}
 
   async execute({
     userId,
-    gameId
+    gameId,
   }: DeleteGameUseCaseRequest): Promise<DeleteGameUseCaseResponse> {
     const game = await this.gameRepository.findById(gameId)
 

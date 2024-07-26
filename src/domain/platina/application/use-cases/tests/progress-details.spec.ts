@@ -1,19 +1,17 @@
-import { InMemoryAchievementsRepository } from "test/repositories/in-memory-achievements-repository";
-import { makeGame } from "test/factories/make-game";
-import { UniqueEntityId } from "@/core/entities/unique-entity-id";
-import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
-import { makeUsers } from "test/factories/make-users";
-import { ProgressDetailsUseCase } from "../progress-details";
-import { InMemoryProgressRepository } from "test/repositories/in-memory-progress-repository";
-import { Progress } from "@/domain/platina/enterprise/entities/progress";
-import { ToggleAchievementStatusUseCase } from "../toggle-achievement-status";
-import { UserAchievement } from "@/domain/platina/enterprise/entities/user-achievement";
+import { InMemoryAchievementsRepository } from 'test/repositories/in-memory-achievements-repository'
+import { makeGame } from 'test/factories/make-game'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
+import { makeUsers } from 'test/factories/make-users'
+import { ProgressDetailsUseCase } from '../progress-details'
+import { InMemoryProgressRepository } from 'test/repositories/in-memory-progress-repository'
+import { Progress } from '@/domain/platina/enterprise/entities/progress'
+import { UserAchievement } from '@/domain/platina/enterprise/entities/user-achievement'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryAchievementsRepository: InMemoryAchievementsRepository
 let inMemoryProgressRepository: InMemoryProgressRepository
 
-let toggleAchievementStatusUseCase: ToggleAchievementStatusUseCase
 let sut: ProgressDetailsUseCase
 
 describe('Progress Details', () => {
@@ -22,14 +20,7 @@ describe('Progress Details', () => {
     inMemoryUsersRepository = new InMemoryUsersRepository()
     inMemoryProgressRepository = new InMemoryProgressRepository()
 
-    toggleAchievementStatusUseCase = new ToggleAchievementStatusUseCase(
-      inMemoryUsersRepository,
-      inMemoryAchievementsRepository,
-      inMemoryProgressRepository
-    )
-    sut = new ProgressDetailsUseCase(
-      inMemoryProgressRepository
-    )
+    sut = new ProgressDetailsUseCase(inMemoryProgressRepository)
   })
 
   it('should be able to get a progress details', async () => {
@@ -48,11 +39,14 @@ describe('Progress Details', () => {
       })
     })
 
-    const userProgress = Progress.create({
-      user,
-      game,
-      userAchievements
-    }, new UniqueEntityId())
+    const userProgress = Progress.create(
+      {
+        user,
+        game,
+        userAchievements,
+      },
+      new UniqueEntityId(),
+    )
 
     await inMemoryProgressRepository.create(userProgress)
 
@@ -81,32 +75,29 @@ describe('Progress Details', () => {
       })
     })
 
-    const userProgress = Progress.create({
-      user,
-      game,
-      userAchievements
-    }, new UniqueEntityId())
+    const userProgress = Progress.create(
+      {
+        user,
+        game,
+        userAchievements,
+      },
+      new UniqueEntityId(),
+    )
+
+    userProgress.userAchievements[0].isDone = true
 
     await inMemoryProgressRepository.create(userProgress)
-
-    const achievementId = game.achievements[0].id
-
-    await toggleAchievementStatusUseCase.execute({
-      userId: user.id.toString(),
-      gameId: game.id.toString(),
-      achievementId: achievementId.toString()
-    })
 
     const { progress } = await sut.execute({
       userId: user.id.toString(),
       gameId: game.id.toString(),
     })
 
-    const doneCount = progress.achievements.filter(item => item.isDone).length
+    const doneCount = progress.achievements.filter((item) => item.isDone).length
 
     expect(progress).toBeTruthy()
     expect(progress.title).toEqual(userProgress.game.title)
-    expect(doneCount).toHaveLength(1)
+    expect(doneCount).toEqual(1)
     expect(userProgress.game.achievements).toHaveLength(4)
     expect(progress.percentage).toEqual(0.25)
   })

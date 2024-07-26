@@ -6,22 +6,24 @@ interface FetchAllGamesUseCaseRequest {
 
 interface FetchAllGamesUseCaseResponse {
   games: {
-    title: string,
+    title: string
     achievementsCount: number
   }[]
 }
 
 export class FetchAllGamesUseCase {
-  constructor(private gamesRepository: GamesRepository) { }
+  constructor(private gamesRepository: GamesRepository) {}
 
-  async execute({ page }: FetchAllGamesUseCaseRequest): Promise<FetchAllGamesUseCaseResponse> {
+  async execute({
+    page,
+  }: FetchAllGamesUseCaseRequest): Promise<FetchAllGamesUseCaseResponse> {
     const games = await this.gamesRepository.findMany({ page })
 
     return {
       games: games.map((game) => ({
         title: game.title,
-        achievementsCount: game.achievements.length
-      }))
+        achievementsCount: game.achievements.length,
+      })),
     }
   }
 }

@@ -29,11 +29,11 @@ export class Progress extends Entity<ProgressProps> {
   }
 
   getAchievementsDone() {
-    return this.props.userAchievements.filter(item => item.isDone)
+    return this.props.userAchievements.filter((item) => item.isDone)
   }
 
   getUndoAchievements() {
-    return this.props.userAchievements.filter(item => !item.isDone)
+    return this.props.userAchievements.filter((item) => !item.isDone)
   }
 
   getAllAchievements() {
@@ -41,19 +41,19 @@ export class Progress extends Entity<ProgressProps> {
   }
 
   calculateThePercentageOfAchievements() {
-    const percentage = this.getAchievementsDone().length / this.getUndoAchievements().length
-    return percentage
+    return this.getAchievementsDone().length / this.game.achievements.length
   }
 
   findUserAchievementById(achievementId: UniqueEntityId) {
-    const userAchievement = this.userAchievements.find(item => item.id === achievementId)
+    const userAchievement = this.userAchievements.find(
+      (item) => item.id === achievementId,
+    )
 
     if (!userAchievement) {
       throw new Error('achievement not found!')
     }
 
     return userAchievement
-
   }
 
   static create(
@@ -63,7 +63,7 @@ export class Progress extends Entity<ProgressProps> {
     const progress = new Progress(
       {
         ...props,
-        userAchievements: [...(props.userAchievements ?? [])]
+        userAchievements: [...(props.userAchievements ?? [])],
       },
       id,
     )

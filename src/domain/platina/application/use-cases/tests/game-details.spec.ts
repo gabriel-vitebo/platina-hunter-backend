@@ -1,11 +1,11 @@
-import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
-import { GameDetailsUseCase } from "../game-details";
-import { makeGame } from "test/factories/make-game";
-import { Slug } from "../../../enterprise/entities/value-object/slug";
-import { UniqueEntityId } from "@/core/entities/unique-entity-id";
-import { Game } from "@/domain/platina/enterprise/entities/game";
-import { title } from "process";
-import { Achievement } from "@/domain/platina/enterprise/entities/achievement";
+import { InMemoryGamesRepository } from 'test/repositories/in-memory-games-repository'
+import { GameDetailsUseCase } from '../game-details'
+import { makeGame } from 'test/factories/make-game'
+import { Slug } from '../../../enterprise/entities/value-object/slug'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Game } from '@/domain/platina/enterprise/entities/game'
+import { title } from 'process'
+import { Achievement } from '@/domain/platina/enterprise/entities/achievement'
 
 let inMemoryGamesRepository: InMemoryGamesRepository
 let sut: GameDetailsUseCase
@@ -17,14 +17,19 @@ describe('Game Details', () => {
   })
 
   it('should be able to get a game details', async () => {
-    const newGame = makeGame({
-      slug: Slug.create('example-game')
-    }, {}, 4, new UniqueEntityId('game-1'))
+    const newGame = makeGame(
+      {
+        slug: Slug.create('example-game'),
+      },
+      {},
+      4,
+      new UniqueEntityId('game-1'),
+    )
 
     await inMemoryGamesRepository.create(newGame)
 
     const { game } = await sut.execute({
-      gameId: newGame.id.toString()
+      gameId: newGame.id.toString(),
     })
 
     expect(game.id).toBeTruthy()

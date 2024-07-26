@@ -22,13 +22,13 @@ interface RegisterGameUseCaseResponse {
 export class RegisterGameUseCase {
   constructor(
     private gameRepository: GamesRepository,
-    private achievementRepository: AchievementRepository
-  ) { }
+    private achievementRepository: AchievementRepository,
+  ) {}
 
   async execute({
     userId,
     title,
-    achievements
+    achievements,
   }: RegisterGameUseCaseRequest): Promise<RegisterGameUseCaseResponse> {
     if (achievements.length <= 0) {
       throw new Error('It is not allowed to create a game without achievements')
@@ -42,14 +42,14 @@ export class RegisterGameUseCase {
 
     await this.gameRepository.create(game)
 
-    const achievementInstances = achievements.map(achievement =>
+    const achievementInstances = achievements.map((achievement) =>
       Achievement.create({
         gameId: game.id,
         title: achievement.title,
         isItLost: achievement.isItLost,
-        description: achievement.description
-      })
-    );
+        description: achievement.description,
+      }),
+    )
 
     for (const achievement of achievementInstances) {
       await this.achievementRepository.create(achievement)
@@ -64,7 +64,7 @@ export class RegisterGameUseCase {
 
     return {
       title: game.title,
-      achievementsCount: game.achievements.length
+      achievementsCount: game.achievements.length,
     }
   }
 }

@@ -1,7 +1,7 @@
-import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
-import { makeGame } from "test/factories/make-game";
-import { EditGameUseCase } from "../edit-game";
-import { UniqueEntityId } from "@/core/entities/unique-entity-id";
+import { InMemoryGamesRepository } from 'test/repositories/in-memory-games-repository'
+import { makeGame } from 'test/factories/make-game'
+import { EditGameUseCase } from '../edit-game'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 let inMemoryGamesRepository: InMemoryGamesRepository
 let sut: EditGameUseCase
@@ -14,7 +14,7 @@ describe('Edit Game', () => {
 
   it('should be able to edit a game', async () => {
     const newGame = makeGame({
-      userId: new UniqueEntityId('user-1')
+      userId: new UniqueEntityId('user-1'),
     })
 
     await inMemoryGamesRepository.create(newGame)
@@ -28,9 +28,9 @@ describe('Edit Game', () => {
           id: newGame.achievements[0].id.toString(),
           title: 'Updated Conquista um',
           description: 'Updated Description um',
-          isItLost: false
-        }
-      ]
+          isItLost: false,
+        },
+      ],
     })
 
     expect(inMemoryGamesRepository.items[0]).toMatchObject({
@@ -39,16 +39,21 @@ describe('Edit Game', () => {
         {
           title: 'Updated Conquista um',
           description: 'Updated Description um',
-          isItLost: false
-        }
-      ]
+          isItLost: false,
+        },
+      ],
     })
   })
 
   it('should not be able to edit a game from another user', async () => {
-    const newGame = makeGame({
-      userId: new UniqueEntityId('user-1')
-    }, {}, 1, new UniqueEntityId('game-1'))
+    const newGame = makeGame(
+      {
+        userId: new UniqueEntityId('user-1'),
+      },
+      {},
+      1,
+      new UniqueEntityId('game-1'),
+    )
 
     await inMemoryGamesRepository.create(newGame)
 
@@ -63,8 +68,8 @@ describe('Edit Game', () => {
             title: newGame.achievements[0].title,
             description: newGame.achievements[0].description,
             isItLost: newGame.achievements[0].isItLost,
-          }
-        ]
+          },
+        ],
       })
     }).rejects.toBeInstanceOf(Error)
   })
@@ -85,8 +90,8 @@ describe('Edit Game', () => {
             title: newGame.achievements[0].title,
             description: newGame.achievements[0].description,
             isItLost: newGame.achievements[0].isItLost,
-          }
-        ]
+          },
+        ],
       })
     }).rejects.toBeInstanceOf(Error)
   })

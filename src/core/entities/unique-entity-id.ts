@@ -3,6 +3,13 @@ import { randomUUID } from 'node:crypto'
 export class UniqueEntityId {
   private value: string
 
+  equals(otherId: UniqueEntityId): boolean {
+    if (otherId instanceof UniqueEntityId) {
+      return this.value === otherId.toValue()
+    }
+    return false
+  }
+
   toString() {
     return this.value
   }

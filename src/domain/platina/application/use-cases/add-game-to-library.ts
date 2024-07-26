@@ -1,41 +1,41 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Progress } from '../../enterprise/entities/progress'
-import { GamesRepository } from '../repositories/games-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import { ProgressRepository } from '../repositories/progress-repository'
 import { UserAchievement } from '../../enterprise/entities/user-achievement'
+import { GamesRepository } from '../repositories/games-repository'
 
 interface AddGameToLibraryUseCaseRequest {
   gameId: string
   userId: string
 }
 
-interface AddGameToLibraryUseCaseResponse { }
+interface AddGameToLibraryUseCaseResponse {}
 
 export class AddGameToLibraryUseCase {
   constructor(
     private usersRepository: UsersRepository,
+    private progressRepository: ProgressRepository,
     private gamesRepository: GamesRepository,
-    private progressRepository: ProgressRepository
-  ) { }
+  ) {}
 
   async execute({
     gameId,
-    userId
+    userId,
   }: AddGameToLibraryUseCaseRequest): Promise<AddGameToLibraryUseCaseResponse> {
-    const game = await this.gamesRepository.findById(gameId)
-
-    if (!game) {
-      throw new Error('Game not found!')
-    }
-
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
       throw new Error('User not found!')
     }
 
-    user.games.push(game) //todo
+    user.checkIfTheGameIsAlreadyAdded(new UniqueEntityId(gameId))
+
+    const game = await this.gamesRepository.findById(gameId)
+
+    if (!game) {
+      throw new Error('Game not found!')
+    }
 
     const userAchievements = game.achievements.map((item) => {
       return UserAchievement.create({
@@ -44,13 +44,19 @@ export class AddGameToLibraryUseCase {
       })
     })
 
-    const progress = Progress.create({
-      user,
-      game,
-      userAchievements,
-    }, new UniqueEntityId)
+    const progress = Progress.create(
+      {
+        user,
+        game,
+        userAchievements,
+      },
+      new UniqueEntityId(),
+    )
+
+    user.gamesProgress.push(progress)
 
     await this.progressRepository.save(progress)
+    await this.usersRepository.save(user)
 
     return {}
   }

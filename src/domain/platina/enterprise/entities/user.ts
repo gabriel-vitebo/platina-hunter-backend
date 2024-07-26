@@ -6,7 +6,7 @@ import { Progress } from './progress'
 
 export interface UserProps {
   name: string
-  games: Progress[]
+  gamesProgress: Progress[]
   createdAt: DateReformed
   updateAt?: DateReformed
 }
@@ -16,8 +16,8 @@ export class User extends Entity<UserProps> {
     return this.props.name
   }
 
-  get games() {
-    return this.props.games
+  get gamesProgress() {
+    return this.props.gamesProgress
   }
 
   get createdAt() {
@@ -37,26 +37,33 @@ export class User extends Entity<UserProps> {
     this.touch()
   }
 
-  set games(games: Progress[]) {
-    this.props.games = games
+  set gamesProgress(gamesProgress: Progress[]) {
+    this.props.gamesProgress = gamesProgress
     this.touch()
   }
 
   findGameById(gameId: UniqueEntityId) {
-    const game = this.games.find(item => item.id === gameId)
+    const game = this.gamesProgress.find((item) => item.game.id === gameId)
 
     if (!game) {
       throw new Error('game not found!')
     }
 
     return game
+  }
 
+  checkIfTheGameIsAlreadyAdded(gameId: UniqueEntityId) {
+    const game = this.gamesProgress.find((item) => item.game.id.equals(gameId))
+    if (game) {
+      throw new Error('Game already in library!')
+    }
   }
 
   static create(props: Optional<UserProps, 'createdAt'>, id?: UniqueEntityId) {
     const user = new User(
       {
         ...props,
+        gamesProgress: props.gamesProgress ?? [],
         createdAt: props.createdAt ?? DateReformed.create(new Date()),
       },
       id,

@@ -23,9 +23,12 @@ export class UserAchievement extends Entity<UserAchievementProps> {
   }
 
   get note() {
-    return this.props.note || Note.create({
-      content: ''
-    })
+    return (
+      this.props.note ||
+      Note.create({
+        content: '',
+      })
+    )
   }
 
   get createdAt() {
@@ -49,7 +52,10 @@ export class UserAchievement extends Entity<UserAchievementProps> {
     this.props.isDone = !this.props.isDone
   }
 
-  static create(props: Optional<UserAchievementProps, 'createdAt'>, id?: UniqueEntityId) {
+  static create(
+    props: Optional<UserAchievementProps, 'createdAt'>,
+    id?: UniqueEntityId,
+  ) {
     const userAchievement = new UserAchievement(
       {
         ...props,

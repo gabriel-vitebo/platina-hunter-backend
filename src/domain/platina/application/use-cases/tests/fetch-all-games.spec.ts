@@ -1,6 +1,6 @@
-import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
-import { FetchAllGamesUseCase } from "../fetch-all-games";
-import { makeGame } from "test/factories/make-game";
+import { InMemoryGamesRepository } from 'test/repositories/in-memory-games-repository'
+import { FetchAllGamesUseCase } from '../fetch-all-games'
+import { makeGame } from 'test/factories/make-game'
 
 let inMemoryGamesRepository: InMemoryGamesRepository
 let sut: FetchAllGamesUseCase
@@ -13,32 +13,30 @@ describe('Fetch All Games', () => {
 
   it('should be able to fetch all games', async () => {
     await inMemoryGamesRepository.create(
-      makeGame({ title: 'Elden Ring' }, {}, 3)
+      makeGame({ title: 'Elden Ring' }, {}, 3),
     )
+    await inMemoryGamesRepository.create(makeGame({ title: 'assassins creed' }))
     await inMemoryGamesRepository.create(
-      makeGame({ title: 'assassins creed' })
-    )
-    await inMemoryGamesRepository.create(
-      makeGame({ title: 'detroit become human' })
+      makeGame({ title: 'detroit become human' }),
     )
 
     const { games } = await sut.execute({
-      page: 1
+      page: 1,
     })
 
     expect(games).toEqual([
       expect.objectContaining({
         title: 'assassins creed',
-        achievementsCount: 1
+        achievementsCount: 1,
       }),
       expect.objectContaining({
         title: 'detroit become human',
-        achievementsCount: 1
+        achievementsCount: 1,
       }),
       expect.objectContaining({
         title: 'Elden Ring',
-        achievementsCount: 3
-      })
+        achievementsCount: 3,
+      }),
     ])
   })
 
@@ -48,7 +46,7 @@ describe('Fetch All Games', () => {
     }
 
     const { games } = await sut.execute({
-      page: 2
+      page: 2,
     })
 
     expect(games).toHaveLength(2)

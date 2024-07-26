@@ -8,7 +8,7 @@ export function makeUsers(
 ) {
   const users = User.create({
     name: faker.person.firstName(),
-    games: [],
+    gamesProgress: [],
     ...override
   }, id)
 

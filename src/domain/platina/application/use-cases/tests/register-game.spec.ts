@@ -1,6 +1,6 @@
-import { InMemoryGamesRepository } from "test/repositories/in-memory-games-repository";
-import { RegisterGameUseCase } from "../register-game";
-import { InMemoryAchievementsRepository } from "test/repositories/in-memory-achievements-repository";
+import { InMemoryGamesRepository } from 'test/repositories/in-memory-games-repository'
+import { RegisterGameUseCase } from '../register-game'
+import { InMemoryAchievementsRepository } from 'test/repositories/in-memory-achievements-repository'
 
 let inMemoryGamesRepository: InMemoryGamesRepository
 let inMemoryAchievementsRepository: InMemoryAchievementsRepository
@@ -10,7 +10,10 @@ describe('Register new Game', () => {
   beforeEach(() => {
     inMemoryGamesRepository = new InMemoryGamesRepository()
     inMemoryAchievementsRepository = new InMemoryAchievementsRepository()
-    sut = new RegisterGameUseCase(inMemoryGamesRepository, inMemoryAchievementsRepository)
+    sut = new RegisterGameUseCase(
+      inMemoryGamesRepository,
+      inMemoryAchievementsRepository,
+    )
   })
 
   it('should be able to register a new game', async () => {
@@ -33,7 +36,7 @@ describe('Register new Game', () => {
           isItLost: true,
           description: 'Descrição dessa terceira conquista teste',
         },
-      ]
+      ],
     })
 
     expect(inMemoryGamesRepository.items[0].title).toEqual(title)
@@ -46,7 +49,7 @@ describe('Register new Game', () => {
       await sut.execute({
         userId: '1',
         title: 'Jogo Teste',
-        achievements: []
+        achievements: [],
       })
     }).rejects.toBeInstanceOf(Error)
   })

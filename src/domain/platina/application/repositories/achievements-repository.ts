@@ -1,4 +1,4 @@
-import { Achievement } from "../../enterprise/entities/achievement";
+import { Achievement } from '../../enterprise/entities/achievement'
 
 export interface AchievementRepository {
   findById(achievementId: string): Promise<Achievement | null>

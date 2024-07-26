@@ -6,16 +6,18 @@ interface GameDetailsUseCaseRequest {
 
 interface GameDetailsUseCaseResponse {
   game: {
-    id: string,
-    title: string,
+    id: string
+    title: string
     achievementsCount: number
   }
 }
 
 export class GameDetailsUseCase {
-  constructor(private gameRepository: GamesRepository) { }
+  constructor(private gameRepository: GamesRepository) {}
 
-  async execute({ gameId }: GameDetailsUseCaseRequest): Promise<GameDetailsUseCaseResponse> {
+  async execute({
+    gameId,
+  }: GameDetailsUseCaseRequest): Promise<GameDetailsUseCaseResponse> {
     const game = await this.gameRepository.findById(gameId)
     if (!game) {
       throw new Error('Game not found!')
@@ -26,7 +28,7 @@ export class GameDetailsUseCase {
         id: game.id.toString(),
         title: game.title,
         achievementsCount: game.achievements.length,
-      }
+      },
     }
   }
 }

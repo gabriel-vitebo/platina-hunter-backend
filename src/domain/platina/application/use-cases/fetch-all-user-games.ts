@@ -1,21 +1,24 @@
 import { UsersRepository } from '../repositories/users-repository'
 
 interface FetchAllUserGamesUseCaseRequest {
-  userId: string,
+  userId: string
   page: number
 }
 
 interface FetchAllUserGamesUseCaseResponse {
   games: {
-    title: string,
+    title: string
     achievementsCount: number
   }[]
 }
 
 export class FetchAllUserGamesUseCase {
-  constructor(private usersRepository: UsersRepository) { }
+  constructor(private usersRepository: UsersRepository) {}
 
-  async execute({ userId, page }: FetchAllUserGamesUseCaseRequest): Promise<FetchAllUserGamesUseCaseResponse> {
+  async execute({
+    userId,
+    page,
+  }: FetchAllUserGamesUseCaseRequest): Promise<FetchAllUserGamesUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
@@ -27,8 +30,8 @@ export class FetchAllUserGamesUseCase {
     return {
       games: gameList.map((game) => ({
         title: game.title,
-        achievementsCount: game.achievements.length
-      }))
+        achievementsCount: game.achievements.length,
+      })),
     }
   }
 }
