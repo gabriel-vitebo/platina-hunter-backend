@@ -43,7 +43,7 @@ export class User extends Entity<UserProps> {
   }
 
   findGameById(gameId: UniqueEntityId) {
-    const game = this.gamesProgress.find((item) => item.game.id === gameId)
+    const game = this.gamesProgress.find((item) => item.game.id.equals(gameId))
 
     if (!game) {
       throw new Error('game not found!')

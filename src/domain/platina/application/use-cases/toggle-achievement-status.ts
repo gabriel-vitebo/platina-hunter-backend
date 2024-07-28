@@ -35,6 +35,7 @@ export class ToggleAchievementStatusUseCase {
     }
 
     const game = user.findGameById(new UniqueEntityId(gameId))
+
     const userAchievement = game.findUserAchievementById(
       new UniqueEntityId(achievementId),
     )

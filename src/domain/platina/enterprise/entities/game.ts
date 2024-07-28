@@ -39,19 +39,19 @@ export class Game extends Entity<GameProps> {
     return this.props.updateAt
   }
 
-  private touch() {
+  private update() {
     this.props.updateAt = DateReformed.create(new Date())
   }
 
   set title(title: string) {
     this.props.title = title
     this.props.slug = Slug.createFromText(title)
-    this.touch()
+    this.update()
   }
 
   set achievements(achievements: Achievement[]) {
     this.props.achievements = achievements
-    this.touch()
+    this.update()
   }
 
   static create(

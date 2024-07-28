@@ -45,8 +45,8 @@ export class Progress extends Entity<ProgressProps> {
   }
 
   findUserAchievementById(achievementId: UniqueEntityId) {
-    const userAchievement = this.userAchievements.find(
-      (item) => item.id === achievementId,
+    const userAchievement = this.userAchievements.find((item) =>
+      item.achievement.id.equals(achievementId),
     )
 
     if (!userAchievement) {

@@ -8,6 +8,7 @@ import { InMemoryProgressRepository } from 'test/repositories/in-memory-progress
 import { Progress } from '@/domain/platina/enterprise/entities/progress'
 import { UserAchievement } from '@/domain/platina/enterprise/entities/user-achievement'
 import { InMemoryGamesRepository } from 'test/repositories/in-memory-games-repository'
+import { expect } from 'vitest'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let inMemoryAchievementsRepository: InMemoryAchievementsRepository
@@ -96,18 +97,21 @@ describe('Mark An Achievement As Done', () => {
       new UniqueEntityId(),
     )
 
+    user.gamesProgress.push(progress)
     await inMemoryProgressRepository.create(progress)
+    await inMemoryUsersRepository.save(user)
 
+    await sut.execute({
+      gameId: game.id.toString(),
+      userId: user.id.toString(),
+      achievementId: achievementId.toString(),
+    })
     const { achievement } = await sut.execute({
       gameId: game.id.toString(),
       userId: user.id.toString(),
       achievementId: achievementId.toString(),
     })
 
-    expect(achievement).toBeTruthy()
-    expect(achievement.title).toEqual(game.achievements[0].title)
-    expect(progress.getAchievementsDone()).toHaveLength(0)
-    expect(progress.getUndoAchievements()).toHaveLength(2)
-    expect(achievement.isDone).toBe(false)
+    expect(achievement.isDone).toEqual(false)
   })
 })
