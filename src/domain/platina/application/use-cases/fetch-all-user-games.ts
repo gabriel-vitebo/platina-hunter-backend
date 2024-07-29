@@ -25,12 +25,12 @@ export class FetchAllUserGamesUseCase {
       throw new Error('User Not Found!')
     }
 
-    const gameList = user.games.slice((page - 1) * 20, page * 20)
+    const gameList = user.gamesProgress.slice((page - 1) * 20, page * 20)
 
     return {
-      games: gameList.map((game) => ({
-        title: game.title,
-        achievementsCount: game.achievements.length,
+      games: gameList.map((item) => ({
+        title: item.game.title,
+        achievementsCount: item.game.achievements.length,
       })),
     }
   }
