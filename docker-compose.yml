@@ -1,0 +1,9 @@
+services:
+  api-platina-hunters-pg:
+    image: bitnami/postgresql:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=bn_platina_hunters
+      - POSTGRESQL_PASSWORD=platina_hunters123
+      - POSTGRESQL_DATABASE=api-platina-hunters
