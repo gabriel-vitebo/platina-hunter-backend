@@ -14,10 +14,57 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
+  id         String     @id @default(uuid())
+  name       String
+  email      String     @unique
+  password   String
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  games      Game[]
+  progress   Progress[]
 
   @@map("users")
+}
+
+model Game {
+  id           String        @id @default(uuid())
+  user_id      String
+  title        String
+  slug         String
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  achievements Achievement[]
+  User         User?         @relation(fields: [user_id], references: [id])
+  Progress     Progress[]
+
+  @@map("games")
+}
+
+model Achievement {
+  id          String    @id @default(uuid())
+  game_id     String
+  progress_id String?
+  title       String
+  isItLost    Boolean
+  description String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  Game        Game?     @relation(fields: [game_id], references: [id])
+  Progress    Progress? @relation(fields: [progress_id], references: [id])
+
+  @@map("achievements")
+}
+
+model Progress {
+  id                String        @id @default(uuid())
+  user_id           String
+  game_id           String
+  achievements_done String[]      @default([])
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+  Achievement       Achievement[]
+  User              User?         @relation(fields: [user_id], references: [id])
+  Game              Game?         @relation(fields: [game_id], references: [id])
+
+  @@map("progress")
 }
